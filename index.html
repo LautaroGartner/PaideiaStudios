@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paideia Studios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syncopate:wght@400;700&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F2EBE0;
+    --orange: #D94F2B;
+    --orange-light: #E8643E;
+    --dark: #1A1410;
+    --mid: #6B5B4E;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--dark);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 48px;
+    background: var(--cream);
+    border-bottom: 1px solid rgba(26,20,16,0.08);
+  }
+
+  .nav-logo {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--dark);
+    text-decoration: none;
+  }
+
+  .nav-cta {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--orange);
+    text-decoration: none;
+    border-bottom: 1px solid var(--orange);
+    padding-bottom: 2px;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(217,79,43,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    animation: fadeUp 0.8s ease forwards;
+    opacity: 0;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(64px, 10vw, 140px);
+    font-weight: 300;
+    line-height: 0.92;
+    color: var(--dark);
+    letter-spacing: -0.02em;
+    animation: fadeUp 0.8s 0.15s ease forwards;
+    opacity: 0;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--orange);
+  }
+
+  .hero-sub {
+    margin-top: 48px;
+    max-width: 480px;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--mid);
+    animation: fadeUp 0.8s 0.3s ease forwards;
+    opacity: 0;
+  }
+
+  .hero-actions {
+    margin-top: 56px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    animation: fadeUp 0.8s 0.45s ease forwards;
+    opacity: 0;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    background: var(--orange);
+    color: var(--cream);
+    font-family: 'Syncopate', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 18px 40px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .btn-primary:hover {
+    background: var(--dark);
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost {
+    font-size: 13px;
+    color: var(--mid);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+  }
+
+  .btn-ghost:hover { color: var(--dark); }
+
+  .btn-ghost::after {
+    content: '↓';
+    font-size: 16px;
+  }
+
+  .hero-number {
+    position: absolute;
+    bottom: 60px;
+    right: 48px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 180px;
+    font-weight: 300;
+    color: rgba(217,79,43,0.06);
+    line-height: 1;
+    pointer-events: none;
+    animation: fadeUp 1s 0.6s ease forwards;
+    opacity: 0;
+  }
+
+  /* STRIP */
+  .strip {
+    background: var(--dark);
+    padding: 16px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+ 
+  .strip-track {
+    display: inline-flex;
+    gap: 48px;
+    animation: marquee 20s linear infinite;
+    padding-right: 48px;
+  }
+ 
+  .strip-item {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--cream);
+    white-space: nowrap;
+    opacity: 0.6;
+  }
+ 
+  .strip-item span { color: var(--orange); opacity: 1; }
+ 
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* SERVICES */
+  .section {
+    padding: 120px 48px;
+  }
+
+  .section-label {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 64px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--orange);
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .service-card {
+    background: rgba(217,79,43,0.04);
+    border: 1px solid rgba(217,79,43,0.12);
+    padding: 48px 40px;
+    position: relative;
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  .service-card:hover {
+    background: rgba(217,79,43,0.08);
+    border-color: rgba(217,79,43,0.3);
+  }
+
+  .service-card.featured {
+    background: var(--dark);
+    border-color: var(--dark);
+  }
+
+  .service-card.featured .service-name,
+  .service-card.featured .service-price,
+  .service-card.featured .service-desc,
+  .service-card.featured .service-item {
+    color: var(--cream);
+  }
+
+  .service-card.featured .service-item::before {
+    background: var(--orange);
+  }
+
+  .service-tag {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: var(--orange);
+    background: rgba(217,79,43,0.12);
+    padding: 4px 10px;
+    display: inline-block;
+    margin-bottom: 32px;
+  }
+
+  .service-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--dark);
+    margin-bottom: 8px;
+  }
+
+  .service-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px;
+    font-weight: 300;
+    color: var(--orange);
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+
+  .service-price span {
+    font-size: 20px;
+    vertical-align: super;
+  }
+
+  .service-desc {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--mid);
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+
+  .service-items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .service-item {
+    font-size: 13px;
+    color: var(--dark);
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .service-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 6px;
+    height: 1px;
+    background: var(--orange);
+  }
+
+  /* PROCESS */
+  .process-section {
+    background: var(--dark);
+    padding: 120px 48px;
+  }
+
+  .process-section .section-label {
+    color: var(--orange);
+  }
+
+  .process-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(40px, 5vw, 72px);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.1;
+    margin-bottom: 80px;
+  }
+
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+
+  .process-step {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 40px 0;
+  }
+
+  .step-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 60px;
+    font-weight: 300;
+    color: rgba(217,79,43,0.3);
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+
+  .step-name {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--cream);
+    margin-bottom: 12px;
+  }
+
+  .step-desc {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.6;
+  }
+
+  /* PORTFOLIO */
+  .portfolio-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    align-items: center;
+    border: 1px solid rgba(217,79,43,0.15);
+    margin-top: 64px;
+  }
+
+  .portfolio-info {
+    padding: 64px;
+  }
+
+  .portfolio-label {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--orange);
+    margin-bottom: 24px;
+  }
+
+  .portfolio-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--dark);
+    margin-bottom: 16px;
+  }
+
+  .portfolio-desc {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--mid);
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+
+  .portfolio-link {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--orange);
+    text-decoration: none;
+    border-bottom: 1px solid var(--orange);
+    padding-bottom: 2px;
+  }
+
+  .portfolio-preview {
+    background: #1A1410;
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 72px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.06);
+    letter-spacing: 0.1em;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .portfolio-preview-inner {
+    text-align: center;
+  }
+
+  .portfolio-preview-inner .p-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.3em;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .portfolio-preview-inner .p-tag {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.15em;
+  }
+
+  /* CTA */
+  .cta-section {
+    padding: 120px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(217,79,43,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(48px, 7vw, 96px);
+    font-weight: 300;
+    color: var(--dark);
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+
+  .cta-title em {
+    font-style: italic;
+    color: var(--orange);
+  }
+
+  .cta-sub {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--mid);
+    margin-bottom: 56px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+  }
+
+  .cta-note {
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--mid);
+    opacity: 0.7;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    padding: 40px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--cream);
+    opacity: 0.6;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 32px;
+  }
+
+  .footer-links a {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--orange); }
+
+ 
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+ 
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .hero { padding: 120px 24px 60px; }
+    .section { padding: 80px 24px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .process-section { padding: 80px 24px; }
+    .process-steps { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .portfolio-block { grid-template-columns: 1fr; }
+    .portfolio-info { padding: 40px 24px; }
+    .portfolio-preview { min-height: 200px; }
+    .cta-section { padding: 80px 24px; }
+    footer { flex-direction: column; gap: 24px; padding: 32px 24px; }
+    .hero-number { font-size: 100px; bottom: 20px; right: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Paideia Studios</a>
+  <a href="#contact" class="nav-cta">Book a call</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">Web · Social · Ads</p>
+  <h1 class="hero-title">Your business,<br><em>built to grow.</em></h1>
+  <p class="hero-sub">We build websites, run social media, and launch ads for small businesses ready to stop being invisible online. 7-day delivery. Flat pricing. No fluff.</p>
+  <div class="hero-actions">
+    <a href="#contact" class="btn-primary">Book a free call</a>
+    <a href="#services" class="btn-ghost">See packages</a>
+  </div>
+  <div class="hero-number">7</div>
+</section>
+
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-track">
+    <span class="strip-item"><span>7-day</span> website delivery</span>
+    <span class="strip-item">·</span>
+    <span class="strip-item">flat <span>$800</span> starter price</span>
+    <span class="strip-item">·</span>
+    <span class="strip-item">50% upfront · <span>50% on delivery</span></span>
+    <span class="strip-item">·</span>
+    <span class="strip-item">US & EU clients</span>
+    <span class="strip-item">·</span>
+    <span class="strip-item">no lock-in contracts</span>
+    <span class="strip-item">·</span>
+    <span class="strip-item"><span>7-day</span> website delivery</span>
+    <span class="strip-item">·</span>
+    <span class="strip-item">flat <span>$800</span> starter price</span>
+    <span class="strip-item">·</span>
+    <span class="strip-item">50% upfront · <span>50% on delivery</span></span>
+    <span class="strip-item">·</span>
+    <span class="strip-item">US & EU clients</span>
+    <span class="strip-item">·</span>
+    <span class="strip-item">no lock-in contracts</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="section" id="services">
+  <div class="section-label">What we offer</div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-tag">Starter</div>
+      <div class="service-name">Website</div>
+      <div class="service-price"><span>$</span>800</div>
+      <div class="service-desc">A clean, fast, launch-ready site that finally makes your business look the part.</div>
+      <ul class="service-items">
+        <li class="service-item">Up to 8 pages</li>
+        <li class="service-item">Mobile responsive</li>
+        <li class="service-item">Domain + payment setup</li>
+        <li class="service-item">SEO basics configured</li>
+        <li class="service-item">Delivered in 7 days</li>
+        <li class="service-item">Handoff call included</li>
+      </ul>
+    </div>
+    <div class="service-card featured">
+      <div class="service-tag">Most popular</div>
+      <div class="service-name">Growth</div>
+      <div class="service-price"><span>$</span>1,200</div>
+      <div class="service-desc">Website plus your first month of social media handled. Build presence while you focus on the work.</div>
+      <ul class="service-items">
+        <li class="service-item">Everything in Starter</li>
+        <li class="service-item">12 posts / month</li>
+        <li class="service-item">Copy + graphics included</li>
+        <li class="service-item">Scheduled & posted for you</li>
+        <li class="service-item">Monthly report</li>
+      </ul>
+    </div>
+    <div class="service-card">
+      <div class="service-tag">Full Stack</div>
+      <div class="service-name">Launch</div>
+      <div class="service-price"><span>$</span>1,800</div>
+      <div class="service-desc">The full setup. Website, social, and your first Meta ad campaign live and running.</div>
+      <ul class="service-items">
+        <li class="service-item">Everything in Growth</li>
+        <li class="service-item">Meta Business Suite setup</li>
+        <li class="service-item">3 ad creatives designed</li>
+        <li class="service-item">First campaign launched</li>
+        <li class="service-item">2-week check-in call</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process-section">
+  <div class="section-label" style="color:rgba(255,255,255,0.3);">How it works</div>
+  <h2 class="process-title">From zero to live<br>in 7 days.</h2>
+  <div class="process-steps">
+    <div class="process-step">
+      <div class="step-number">01</div>
+      <div class="step-name">Discovery call</div>
+      <div class="step-desc">20 minutes. We understand your business, your customers, and what you need.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-number">02</div>
+      <div class="step-name">Proposal</div>
+      <div class="step-desc">You get a clear scope, flat price, and timeline. No surprises. 50% to start.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-number">03</div>
+      <div class="step-name">Build</div>
+      <div class="step-desc">We build. You get updates. One round of revisions included.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-number">04</div>
+      <div class="step-name">Launch</div>
+      <div class="step-desc">Site goes live. You pay the remaining 50%. Handoff call to walk you through everything.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="section" id="work">
+  <div class="section-label">Our work</div>
+  <div class="portfolio-block">
+    <div class="portfolio-info">
+      <div class="portfolio-label">Case study — E-commerce</div>
+      <div class="portfolio-name">Paideia Store</div>
+      <div class="portfolio-desc">Built from scratch on Shopify. Full product setup, brand identity, Printful integration, payment configuration, and launch-ready in under 2 weeks.</div>
+      <a href="https://www.paideiastore.com" target="_blank" class="portfolio-link">View live site →</a>
+    </div>
+<div class="portfolio-preview">
+  <img src="preview.png" alt="Paideia Store" style="width:100%; height:100%; object-fit:cover; display:block;">
+</div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <h2 class="cta-title">Ready to get<br><em>started?</em></h2>
+  <p class="cta-sub">Book a free 20-minute call. No commitment. We'll figure out exactly what your business needs.</p>
+ <a href="https://calendly.com/contact-paideiastudios/30min" class="btn-primary">Book a free call</a>
+  <p class="cta-note">Or email us directly at contact@paideiastudios.com</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Paideia Studios</div>
+  <div class="footer-links">
+    <a href="#services">Services</a>
+    <a href="#work">Work</a>
+    <a href="#contact">Contact</a>
+    <a href="https://www.instagram.com/paideiastudios" target="_blank">Instagram</a>
+  </div>
+</footer>
+
+</body>
+</html>
